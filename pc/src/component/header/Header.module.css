@@ -1,0 +1,36 @@
+.headermain{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+}
+
+.curser{
+    cursor: pointer;
+}
+.area{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    text-align: center;
+    margin: 0 auto;
+}
+.btn{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.btn button{
+    width: 65px;
+    padding: 5px;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: 0.5s;
+}
+.btn button:hover{
+    background-color: black;
+    color: white;
+    border-color: white;
+}
