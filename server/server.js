@@ -6,17 +6,26 @@ const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+}));
+
 app.use(express.json());
 
-app.get("/test", (req, res) => {
-    res.status(200).json({
-        id: "test 입니다."
-    })
-})
+
+const signupRouter  = require('./routes/auth/signup.js');
+const signinRouter = require('./routes/auth/signin.js');
+const meRouter = require('./routes/auth/me.js');
+
+
+// 회원가입 로직
+app.use('/auth/signup', signupRouter);
+app.use('/auth/signin', signinRouter)
+app.use('/auth/me', meRouter);
 
 app.listen(process.env.NODE_PORT, () => {
-    console.log("server start 5000 PORT");
+    console.log("server start");
 });
 
 
