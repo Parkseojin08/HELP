@@ -43,7 +43,7 @@ exports.signup = async (req, res) => {
         }
 
          const checkEamil = await pool.query(
-               'select email from messenger.userinfo  where email = $1',
+               'select email from messenger.user_info  where email = $1',
             [email]
          )
          
@@ -56,11 +56,11 @@ exports.signup = async (req, res) => {
 
         const hash = await bcrypt.hash(password, Number(process.env.HASH));
         const request = await pool.query(
-            'insert into messenger.userinfo(username, password, email) values ($1, $2, $3)',
+            'insert into messenger.user_info(username, password, email) values ($1, $2, $3)',
             [username, hash, email]
         );
         
-        res.status(200).json({
+        res.status(201).json({
             success: true,
             message: "회원가입에 성공하였습니다."
         });

@@ -6,12 +6,12 @@ exports.signin = async (req , res) => {
     try{
         const { email, password } = req.body;
         const data = await pool.query(
-            'select id, username, email, password from messenger.userinfo where email = $1',
+            'select id, username, email, password from messenger.user_info where email = $1',
             [email]
         );
         const findUser = data.rows[0];
           if(!findUser){
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "실패했습니다" 
             })
@@ -21,7 +21,7 @@ exports.signin = async (req , res) => {
         const check = await bcrypt.compare(password, findUser.password);
 
         if(!check){
-            res.status(401).json({
+            res.status(400).json({
                 success: false,
                 message: "비밀번호가 다릅니다."
             });
@@ -34,14 +34,30 @@ exports.signin = async (req , res) => {
             email: findUser.email
         };
 
-        const token = jwt.sign(payload, process.env.KEY , { expiresIn: '1h' });
+        const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_KEY , { expiresIn: '15m' });
+    
+        const refreshToken = jwt.sign({ id: findUser.id }, process.env.REFRESH_TOKEN_KEY , { expiresIn: '7d' })
         
-        res.cookie('token', token,{
+        res.cookie('accessToken', accessToken,{
             httpOnly: true,
             secure: false,
             sameSite: 'lax',
-            maxAge: 1000 * 60 * 60 * 24
+            maxAge: 1000 * 60 * 15
         });
+
+
+        res.cookie('refreshToken', refreshToken ,{
+            httpOnly: true,
+            secure: false,
+            sameSite: 'lax',
+            maxAge: 1000 * 60 * 60 * 24 * 7
+        });
+
+        await pool.query(
+            'update messenger.user_info set refresh_token = $1 where id = $2',
+            [refreshToken, findUser.id]
+        );
+
 
         res.status(200).json({
             success: true,
