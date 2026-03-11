@@ -27,15 +27,15 @@ exports.me = async (req, res) => {
             const checkRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_KEY);
             
             const dbRefreshToken = await pool.query(
-                'select refresh_token from messenger.user_info where id = $1',
-                [checkRefreshToken.id]
+                'select refresh_token from messenger.user_info where user_id = $1',
+                [checkRefreshToken.user_id]
             );
 
             if(refreshToken !== dbRefreshToken.rows[0].refresh_token){
 
                 await pool.query(
-                    'update messenger.user_info set refresh_token = null where id = $1',
-                    [checkRefreshToken.id]
+                    'update messenger.user_info set refresh_token = null where user_id = $1',
+                    [checkRefreshToken.user_id]
                 )
                 res.clearCookie('refreshToken');
                 res.status(401).json({
@@ -49,13 +49,13 @@ exports.me = async (req, res) => {
 
             if(checkRefreshToken){
                 const data = await pool.query(
-                    'select id, username, email from messenger.user_info where id = $1',
-                    [checkRefreshToken.id]
+                    'select user_id, username, email from messenger.user_info where user_id = $1',
+                    [checkRefreshToken.user_id]
                 );
                 const findUser = data.rows[0];
 
                 const payload = {
-                    id: findUser.id,
+                    user_id: findUser.user_id,
                     username: findUser.username,
                     email: findUser.email
                 };
@@ -81,6 +81,7 @@ exports.me = async (req, res) => {
                 success: false,
                 message: "로그인 필요"
             })
+            return;
         }
     }
 }

@@ -3,7 +3,8 @@ import axios from 'axios';
 const signin = async ( {email, password} ) =>{
     try{
         const request = await axios.post("/auth/signin",
-            { email, password }
+            { email, password },
+            { withCredentials: true }
         );
         
         return request.data;

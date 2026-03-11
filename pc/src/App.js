@@ -1,24 +1,36 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import style from './App.module.css'; 
 
 //auth
 import me from './api/auth/me';
+import { useAuth } from './context/AuthContext';
 
 // component
 import Header from './component/header/Header.jsx';
-import Main from './component/main/Main.jsx';
-import Signup from './component/auth/Signup.jsx';
-import Signin from './component/auth/Signin.jsx';
+import Main from './page/main/Main.jsx';
+import Signup from './page/auth/Signup.jsx';
+import Signin from './page/auth/Signin.jsx';
+
+//authcontext
 function App() {
+  const { setUserInfo } = useAuth();
+
+  const tokenCheck = async () => {
+    const data = await me();
+    if(data?.success){
+      setUserInfo(data.userInfo);
+    }
+  }
 
   useEffect(() => {
-    const tokenCheck = async () => {
-      const data = await me();
-    }
     tokenCheck()
+    
+    const check = setInterval(() => {
+      tokenCheck();
+    }, 1000 * 60 * 14);
+    return () => clearInterval(check);
   }, []);
-
   return (
     <div className={style.main}>
       <BrowserRouter>

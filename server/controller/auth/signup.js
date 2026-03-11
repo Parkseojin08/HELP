@@ -20,7 +20,7 @@ exports.signup = async (req, res) => {
                 success: false,
                 message: "이름의 조건을 충족하지 못하였습니다."
             })
-            
+            return;
         }
 
         const regexPW = /^[a-zA-Z0-9!@#]{8,12}$/;
@@ -33,7 +33,7 @@ exports.signup = async (req, res) => {
             return;
         }
 
-        const regexEM = /^[A-Za-z.0-9]+@[A-Za-z.]{2,}\.[A-Za-z]{2,}$/;
+        const regexEM = /^[A-Za-z.0-9]+@([A-Za-z0-9]{2,}\.)+[a-zA-Z]{2,}$/;
         if(!regexEM.test(email)){
             res.status(400).json({
                 success: false,
@@ -52,10 +52,29 @@ exports.signup = async (req, res) => {
                 success: false,
                 message: "중복된 이메일 입니다."
             })
+            return;
          }
 
+        const emailVerify = await pool.query(
+            'select verified from messenger.email_verify where email = $1',
+            [email]
+        )
+
+        if(!(emailVerify.rowCount && emailVerify.rows[0].verified)){
+            res.status(400).json({
+                success: false,
+                message: "이메일 인증을 받아주세요."
+            })
+            return;
+        }
+
+        await pool.query(
+            'delete from messenger.email_verify where email = $1',
+            [email]
+        )
+
         const hash = await bcrypt.hash(password, Number(process.env.HASH));
-        const request = await pool.query(
+         await pool.query(
             'insert into messenger.user_info(username, password, email) values ($1, $2, $3)',
             [username, hash, email]
         );

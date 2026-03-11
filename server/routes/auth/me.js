@@ -4,4 +4,4 @@ const authMe = require('../../controller/auth/me')
 
 routes.get('/', authMe.me);
 
-module.exprots = routes;
+module.exports = routes;

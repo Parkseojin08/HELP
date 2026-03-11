@@ -1,8 +1,11 @@
+html{
+    height: 100%;
+}
 .main{
     width: 100%;
     min-height: 100vh;
     padding: 0;
     margin: 0;
-    background-image: url('https://img.freepik.com/premium-photo/comment-social-media-3d-render_41204-3539.jpg');
+    background-color: #e0dcdc;
     background-size: cover;
 }
