@@ -1,0 +1,21 @@
+.friend{
+    height: calc(100vh - 75px);
+    border-right: 2px solid gray;
+    min-width: 75px;
+}
+
+
+
+.title{
+    text-align: center;
+}
+.title h4{
+    margin: 0;
+    padding: 20px 0;
+    border-bottom: 2px solid black;
+}
+
+.list h5{
+    padding-left: 10px;
+    box-sizing: border-box;
+}
