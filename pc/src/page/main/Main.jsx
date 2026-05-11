@@ -9,6 +9,7 @@ import { useState } from 'react';
 // search page
 import FriendSearch from '../friend/FriendSearch';
 import FriendList from '../../component/main-component/FriendList';
+import ChatPanel from '../../component/chat/ChatPanel';
 
 export default function Main(){
     const { userInfo } = useAuth();
@@ -21,7 +22,7 @@ export default function Main(){
         <main className={Style.MainBox}>
             <div className={Style.size20}>
                 {userInfo ?
-                    <SideBox setChoice = {setChoice} friendChange = {friendChange}/>
+                    <SideBox setChoice={setChoice} choice={choice} friendChange={friendChange} />
                 :
                 <div>
                 </div>
@@ -29,9 +30,7 @@ export default function Main(){
             </div>
             <div className={Style.content}>
                 {(userInfo && choice === 'chat') ? 
-                    <div>
-                        <h4>chat</h4>
-                    </div> 
+                    <ChatPanel/>
                     :
                     <div className={Style.flexBox}>
                         <div className={Style.size20}>

@@ -8,7 +8,7 @@ exports.searchFriendList = async (req, res) => {
         if(!decoded) throw new Error("no token");
 
         const data = await pool.query(
-            'select f.friend_count, u.username from messenger.friend f JOIN messenger.user_info u on f.friend_id = u.user_id where f.user_id = $1',
+            'select f.friend_count, f.friend_id, u.username, u.profile from messenger.friend f JOIN messenger.user_info u on f.friend_id = u.user_id where f.user_id = $1',
            [decoded.user_id]
         );
         if(!data.rowCount){

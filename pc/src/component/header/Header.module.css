@@ -1,40 +1,136 @@
-.headermain{
+.headermain {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
     box-sizing: border-box;
     height: 75px;
-    border-bottom: 2px solid grey;
+    padding: 0 50px;
+    background: linear-gradient(
+        135deg,
+        var(--bg-primary),
+        var(--bg-secondary)
+    );
+    border-bottom: 1px solid var(--border-light);
+    box-shadow: var(--shadow-md);
+    transition: all 0.3s ease;
 }
 
-.curser{
+.curser {
     cursor: pointer;
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.5rem;
+    transition: transform 0.3s ease;
 }
 
-.area{
-    display: flex;
-    flex-direction: column;
-    width: 150px;
-    text-align: center;
-    margin: 0 auto;
+.curser:hover {
+    transform: scale(1.05);
 }
 
-.btn{
+/* 왼쪽 로고 영역 */
+.area {
     display: flex;
-    justify-content: space-evenly;
     align-items: center;
+    min-width: 0;
+    gap: 12px;
 }
 
-.btn button{
-    width: 65px;
-    padding: 5px;
-    border-radius: 0.5rem;
+.start {
+    justify-content: flex-start;
+}
+
+/* 오른쪽 버튼 영역 */
+.end {
+    justify-content: flex-end;
+}
+
+.btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.btn button {
+    min-width: 65px;
+    padding: 8px 16px;
+    border-radius: 8px;
     font-weight: 600;
-    transition: 0.5s;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
 }
 
-.btn button:hover{
-    background-color: black;
-    color: white;
-    border-color: white;
+.btn button:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: #fff;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(79, 124, 255, 0.3);
+}
+
+.btn button:active {
+    transform: translateY(0);
+}
+
+/* 테마 토글 버튼 */
+.themeToggle {
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+}
+
+.themeToggle:hover {
+    background-color: var(--bg-tertiary);
+    transform: rotate(20deg) scale(1.1);
+    box-shadow: 0 2px 8px rgba(79, 124, 255, 0.2);
+}
+
+.themeToggle:active {
+    transform: rotate(20deg) scale(0.95);
+}
+
+@media (max-width: 500px) {
+    .headermain {
+        padding: 0 14px;
+        height: 65px;
+    }
+
+    .curser {
+        font-size: 1.2rem;
+    }
+
+    .btn {
+        gap: 6px;
+    }
+
+    .btn button {
+        padding: 6px 12px;
+        font-size: 12px;
+        min-width: 55px;
+    }
+
+    .themeToggle {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+    }
 }
